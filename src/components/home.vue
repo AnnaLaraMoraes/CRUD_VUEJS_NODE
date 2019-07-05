@@ -121,6 +121,7 @@ import pessoasService from '@/api-services/pessoas.service';
 let vm
 export default {
   name: "Home",
+  // funcao quando abre a página já executa
   created() {
     vm = this
     vm.listar();
@@ -144,6 +145,7 @@ export default {
     };
   }, 
   methods: {
+    // metodo de listar pessoas, mandando uma requisição getAll para o server
     listar() {
       pessoasService.getAll().then((response) => {
        vm.pessoas = response.data;
@@ -152,6 +154,7 @@ export default {
       console.log(error.response.data);
     });
     },
+    // ao clicar no botao remover essa funcao é executada, mandando o id da pessoa que foi clicada para o server
     remover(id) {
       pessoasService.delete(id).then((response) => {
           console.log(response);
@@ -160,6 +163,7 @@ export default {
           console.log(error);
         });
     },
+    // ao clicar no botão mostrarModal, essa funcao é iniciada para abrir a mesma modal usada para cadastro
     mostrarModal(id, bool){
       vm.id = id
       vm.showModal = bool
@@ -181,11 +185,13 @@ export default {
       vm.ativo = "";
       vm.state = null;
     },
+    // ao clicar no botão ok na modal, é acionada essa funcao que confere se existe um id, se existir chama a funcao de update, se não chama a de adicionar pessoa
     enviar(id) {
       console.log("id->");console.log(id);
       if ( id == '') {vm.addPessoa();}
       else{vm.updatePessoa(id);}
     },
+    // funcao que manda req update para o server para atualizar no banco os dados do ID solicitado
     updatePessoa(id){
       if (!vm.checkFormValidity()) {
         return;
@@ -205,6 +211,7 @@ export default {
           console.log(error);
         });
     },
+    // funcao para add pessoa, mandando os dados para o server
     addPessoa() {
       if (!vm.checkFormValidity()) {
         return;
@@ -227,6 +234,7 @@ export default {
         vm.$refs.modal.hide();
       });
     },
+    // funcao que manda id para o server para fazer uma busca no banco 
     buscar(id) {
       console.log('entrou em buscar');console.log(id)
       pessoasService.get(id).then((response) => {
@@ -236,6 +244,7 @@ export default {
           console.log(error);
         });
     },
+    //////////////// todos esses metodos são de requisicao para o server ///////////////
   }
 };
 </script>
